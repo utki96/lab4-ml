@@ -11,18 +11,6 @@ public class ProbVal {
     private KeyValue condition;
     private double value;
 
-    public KeyValue getProb() {
-        return prob;
-    }
-
-    public KeyValue getCondition() {
-        return condition;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
     @Override
     public String toString() {
         String val = "";

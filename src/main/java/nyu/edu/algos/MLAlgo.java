@@ -13,6 +13,8 @@ public abstract class MLAlgo {
         this.testLabels = new ArrayList<>();
         this.predictedLabels = new ArrayList<>();
     }
+
+    protected boolean isVerbose;
     protected List<Double[]> trainingData;
     protected List<String> trainingLabels;
     protected List<Double[]> testingData;
@@ -20,6 +22,9 @@ public abstract class MLAlgo {
     protected List<String> predictedLabels;
 
     public void readTrainingAndTestingData(String trainingFile, String testingFile) {
+        if (trainingFile == null || trainingFile.isEmpty()) {
+            throw new RuntimeException("Error: Training data not provided");
+        }
         InputReader.readData(trainingFile, trainingData, trainingLabels);
         if (testingFile != null && ! testingFile.isEmpty()) {
             InputReader.readData(testingFile, testingData, testLabels);

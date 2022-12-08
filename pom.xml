@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nyu.edu</groupId>
-    <artifactId>lab4-ml</artifactId>
+    <artifactId>learn</artifactId>
     <version>1</version>
 
     <properties>

@@ -14,10 +14,6 @@ public class Point {
         return position.get(index);
     }
 
-    public List<Double> getPosition() {
-        return position;
-    }
-
     @Override
     public String toString() {
         String res = "( ";

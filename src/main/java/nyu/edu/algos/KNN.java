@@ -19,8 +19,9 @@ public class KNN extends MLAlgo {
 
     private int kValue;
 
-    public KNN(int k) {
+    public KNN(int k, boolean isVerbose) {
         super();
+        this.isVerbose = isVerbose;
         this.kValue = k;
     }
 
@@ -31,6 +32,9 @@ public class KNN extends MLAlgo {
 
     @Override
     public void testModel() {
+        if (testingData == null || testingData.isEmpty() || testLabels == null || testLabels.isEmpty()) {
+            throw new RuntimeException("KNN: Testing data and labels not loaded");
+        }
         for (int i = 0; i < testingData.size(); i++) {
             predictedLabels.add(i, getLabelForInput(i));
         }
@@ -38,7 +42,7 @@ public class KNN extends MLAlgo {
 
     private String getLabelForInput(int testIndex) {
         PriorityQueue<IndexValue> distancesPQ = new PriorityQueue<>(Comparator.comparingDouble(a -> a.value));
-        int trainingIndex = 0, k = this.kValue, maxCount = -1;
+        int trainingIndex = 0, k = this.kValue;
         for (Double[] inputAttrs : trainingData) {
             double eucDistSq = 0.0;
             for (int i = 0; i < inputAttrs.length; i++) {
@@ -48,12 +52,15 @@ public class KNN extends MLAlgo {
             trainingIndex++;
         }
         String label = "";
-        Map<String, Integer> labelCount = new HashMap<>();
+        double maxWeight = -1.0;
+        Map<String, Double> labelCount = new HashMap<>();
         while (k-- > 0) {
-            String popLabel = trainingLabels.get(distancesPQ.poll().index);
-            labelCount.put(popLabel, labelCount.getOrDefault(popLabel, 0) + 1);
-            if (labelCount.get(popLabel) >= maxCount) {
-                maxCount = labelCount.get(popLabel);
+            IndexValue indexValue = distancesPQ.poll();
+            String popLabel = trainingLabels.get(indexValue.index);
+            double voteWeight = indexValue.value != 0 ? (1.0 / indexValue.value) : 999;
+            labelCount.put(popLabel, labelCount.getOrDefault(popLabel, 0.0) + voteWeight);
+            if (labelCount.get(popLabel) >= maxWeight) {
+                maxWeight = labelCount.get(popLabel);
                 label = popLabel;
             }
         }

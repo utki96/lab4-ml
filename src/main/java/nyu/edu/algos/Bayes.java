@@ -14,12 +14,17 @@ public class Bayes extends MLAlgo {
     private final String LABEL_COLUMN = "C";
     private Map<String, Double> probValues;
 
-    public Bayes(double c) {
+    public Bayes(double c, boolean isVerbose) {
+        super();
+        this.isVerbose = isVerbose;
         this.corr = c;
         this.probValues = new HashMap<>();
     }
     @Override
     public void trainModel() {
+        if (testingData == null || testingData.isEmpty() || testLabels == null || testLabels.isEmpty()) {
+            throw new RuntimeException("Bayes: Testing data and labels not loaded");
+        }
         Map<Integer, Set<Double>> valueSetIndex = new HashMap<>();
         Set<String> labelSet = new HashSet<>(trainingLabels);
         getValuesForColumn(valueSetIndex);
@@ -43,8 +48,11 @@ public class Bayes extends MLAlgo {
             labelCount.put(label, labelCount.getOrDefault(label, 0) + 1);
         }
         for (String label : labelCount.keySet()) {
-            probValues.put(new ProbVal(new KeyValue(LABEL_COLUMN, label), null, 0.0).toString(),
-                    (double) labelCount.get(label) / (double) trainingLabels.size());
+            String probTerm = new ProbVal(new KeyValue(LABEL_COLUMN, label), null, 0.0).toString();
+            probValues.put(probTerm, (double) labelCount.get(label) / (double) trainingLabels.size());
+            if (isVerbose) {
+                System.out.printf("P( %s ) = [ %d / %d ]\n", probTerm, labelCount.get(label), trainingLabels.size());
+            }
         }
     }
 
@@ -64,11 +72,19 @@ public class Bayes extends MLAlgo {
                             indexValCount.getOrDefault(trainingData.get(trainingDataIndex)[columnIndex], 0) + 1);
                 }
                 for (Double indexVal : valueSetIndex.getOrDefault(columnIndex, new HashSet<>())) {
-                    probValues.put(new ProbVal(new KeyValue(Integer.toString(columnIndex), Double.toString(indexVal)), labelKeyValue, 0.0).toString(),
-                            getProbValue(indexValCount.getOrDefault(indexVal, 0), valueCount, valueSetIndex.getOrDefault(columnIndex, new HashSet<>()).size()));
+                    String probTerm = new ProbVal(new KeyValue(getTestingColumnLabel(columnIndex), Double.toString(indexVal)), labelKeyValue, 0.0).toString();
+                    probValues.put(probTerm, getProbValue(indexValCount.getOrDefault(indexVal, 0), valueCount, valueSetIndex.getOrDefault(columnIndex, new HashSet<>()).size()));
+                    if (isVerbose) {
+                        System.out.printf("P( %s ) = [ %d / %d ]\n", probTerm, (int) (indexValCount.getOrDefault(indexVal, 0) + corr),
+                                (int) (valueCount + valueSetIndex.getOrDefault(columnIndex, new HashSet<>()).size() * corr));
+                    }
                 }
             }
         }
+    }
+
+    private String getTestingColumnLabel(int index) {
+        return "A" + index;
     }
 
     private double getProbValue(int trueCount, int totalCount, int domainCount) {
@@ -90,7 +106,7 @@ public class Bayes extends MLAlgo {
             KeyValue labelKeyValue = new KeyValue(LABEL_COLUMN, label);
             double labelValue = probValues.getOrDefault(new ProbVal(labelKeyValue, null, 0.0).toString(), 0.0);
             for (int columnIndex = 0; columnIndex < testingData.get(0).length; columnIndex++) {
-                labelValue = labelValue * probValues.getOrDefault(new ProbVal(new KeyValue(Integer.toString(columnIndex),
+                labelValue = labelValue * probValues.getOrDefault(new ProbVal(new KeyValue(getTestingColumnLabel(columnIndex),
                         Double.toString(testingData.get(testIndex)[columnIndex])), labelKeyValue, 0.0).toString(), 0.0);
             }
             if (labelValue > maxValue) {

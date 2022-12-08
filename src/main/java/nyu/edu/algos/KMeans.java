@@ -1,5 +1,6 @@
 package nyu.edu.algos;
 
+import nyu.edu.dto.Constants;
 import nyu.edu.dto.Point;
 
 import java.util.ArrayList;
@@ -13,25 +14,29 @@ public class KMeans extends MLAlgo {
     private List<Point> centroids;
     private Map<Integer, List<Integer>> centroidMap;   // Map of (centroid index -> training data index)
 
-    private String DISTANCE_FUN = "e2";
+    private String DISTANCE_FUN = Constants.E2_DIST;
 
-    public KMeans(int k, List<Point> centroids) {
+    public KMeans(int k, List<Point> centroids, String distanceFunc, boolean isVerbose) {
+        super();
+        this.isVerbose = isVerbose;
         this.k = k;
         this.centroids = centroids;
         this.centroidMap = new HashMap<>();
-    }
-
-    public KMeans(int k, List<Point> centroids, String distanceFunc) {
-        this.k = k;
-        this.centroids = centroids;
-        this.centroidMap = new HashMap<>();
-        this.DISTANCE_FUN = distanceFunc;
+        if (distanceFunc != null && ! distanceFunc.isEmpty()) {
+            this.DISTANCE_FUN = distanceFunc;
+        }
     }
 
     @Override
     public void trainModel() {
+        if (! (DISTANCE_FUN.equalsIgnoreCase(Constants.E2_DIST) || DISTANCE_FUN.equalsIgnoreCase(Constants.MANH_DIST))) {
+            throw new RuntimeException("Invalid distance function for KMeans: " + DISTANCE_FUN);
+        }
         boolean isFirstIteration = true;
         while (isFirstIteration || centroidsChanged()) {
+            System.out.println("------------------------------------------  Iteration ------------------------------------------------------");
+            evaluateModel();
+            System.out.println("------------------------------------------ -----------------------------------------------------------------");
             centroidMap = new HashMap<>();
             assignPointsToCentroids();
             isFirstIteration = false;
@@ -53,7 +58,11 @@ public class KMeans extends MLAlgo {
             }
             for (int dimension = 0; dimension < dimensions; dimension++) {
                 int pointCount = centroidMap.getOrDefault(centroidIndex, new ArrayList<>()).size();
-                centroidPoint.set(dimension, centroidPoint.get(dimension) / (pointCount != 0 ? pointCount : 1));
+                if (pointCount == 0) {        // Leaving centroid unchanged
+                    centroidPoint.set(dimension, centroids.get(centroidIndex).getPositionForDimension(dimension));
+                } else {
+                    centroidPoint.set(dimension, centroidPoint.get(dimension) / pointCount);
+                }
                 if (Double.compare(centroids.get(centroidIndex).getPositionForDimension(dimension), centroidPoint.get(dimension)) != 0) {
                     centroidChanged = true;
                 }
@@ -83,7 +92,7 @@ public class KMeans extends MLAlgo {
     private double getPointDistFromCentroid(int pointIndex, int centroidIndex) {
         double distance = 0.0;
         for (int dimension = 0; dimension < trainingData.get(0).length; dimension++) {
-            if (DISTANCE_FUN.equalsIgnoreCase("manh")) {
+            if (DISTANCE_FUN.equalsIgnoreCase(Constants.MANH_DIST)) {
                 distance += Math.abs(trainingData.get(pointIndex)[dimension] - centroids.get(centroidIndex).getPositionForDimension(dimension));
             } else {
                 distance += Math.pow(trainingData.get(pointIndex)[dimension] - centroids.get(centroidIndex).getPositionForDimension(dimension), 2);

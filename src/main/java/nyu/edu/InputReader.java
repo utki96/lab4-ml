@@ -1,5 +1,9 @@
 package nyu.edu;
 
+import nyu.edu.dto.Args;
+import nyu.edu.dto.Constants;
+import nyu.edu.dto.Point;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -52,5 +56,52 @@ public class InputReader {
             throw new RuntimeException("Failed to read Input File. Error msg: " + ex.getMessage());
         }
         return instructions;
+    }
+
+    public static void updateArgs(Args args, String inputArg) {
+        if (inputArg.toLowerCase().startsWith(Constants.INPUT_TRAIN)) {
+            args.setTrainFile(getInputValue(inputArg));
+        } else if (inputArg.toLowerCase().startsWith(Constants.INPUT_TEST)) {
+            args.setTestFile(getInputValue(inputArg));
+        } else if (inputArg.equalsIgnoreCase(Constants.INPUT_VERBOSE)) {
+            args.setVerbose(true);
+        } else if (inputArg.toLowerCase().startsWith(Constants.INPUT_K)) {
+            args.setK(getIntInputValue(inputArg));
+        } else if (inputArg.toLowerCase().startsWith(Constants.INPUT_C)) {
+            args.setC(getIntInputValue(inputArg));
+        } else if (inputArg.toLowerCase().startsWith(Constants.INPUT_D)) {
+            args.setDistanceFunc(getInputValue(inputArg));
+        } else if (! inputArg.contains("=") && inputArg.contains(",")) {
+            args.addInitialCentroid(getPointFromInput(inputArg));
+        }
+    }
+
+    private static Point getPointFromInput(String inputArg) {
+        String[] positions = inputArg.split(",");
+        List<Double> pos = new ArrayList<>();
+        for (String position : positions) {
+            try {
+                pos.add(Double.parseDouble(position));
+            } catch (Exception ex) {
+                throw new RuntimeException("Unable to parse centroid: " + inputArg);
+            }
+        }
+        return new Point(pos);
+    }
+
+    private static int getIntInputValue(String inputArg) throws RuntimeException {
+        try {
+            return Integer.parseInt(getInputValue(inputArg));
+        } catch (Exception ex) {
+            throw new RuntimeException(String.format("Failed to parse input param: %s, Error: %s", inputArg, ex.getMessage()));
+        }
+    }
+
+    private static String getInputValue(String inputArg) throws RuntimeException {
+        try {
+            return inputArg.substring(inputArg.indexOf("=") + 1);
+        } catch (Exception ex) {
+            throw new RuntimeException(String.format("Failed to parse input param: %s, Error: %s", inputArg, ex.getMessage()));
+        }
     }
 }
