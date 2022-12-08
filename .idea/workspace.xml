@@ -5,22 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="219625af-e6fb-4f65-b93e-905357f2638a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/Args.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/AlgoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/AlgoFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/InputReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/InputReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/Util.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/Bayes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/Bayes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/KMeans.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/KMeans.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/KNN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/KNN.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/MLAlgo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/algos/MLAlgo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/KeyValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/KeyValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/ProbVal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/nyu/edu/dto/ProbVal.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +92,8 @@
       <workItem from="1669963049435" duration="2160000" />
       <workItem from="1670438324200" duration="5008000" />
       <workItem from="1670471474449" duration="10237000" />
-      <workItem from="1670515812864" duration="3137000" />
+      <workItem from="1670515812864" duration="3462000" />
+      <workItem from="1670534141449" duration="1084000" />
     </task>
     <servers />
   </component>
@@ -143,12 +131,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/nyu/edu/algos/KMeans.java</url>
-          <line>71</line>
+          <line>68</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/nyu/edu/algos/KMeans.java</url>
-          <line>47</line>
+          <line>44</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

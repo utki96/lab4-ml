@@ -34,9 +34,6 @@ public class KMeans extends MLAlgo {
         }
         boolean isFirstIteration = true;
         while (isFirstIteration || centroidsChanged()) {
-            System.out.println("------------------------------------------  Iteration ------------------------------------------------------");
-            evaluateModel();
-            System.out.println("------------------------------------------ -----------------------------------------------------------------");
             centroidMap = new HashMap<>();
             assignPointsToCentroids();
             isFirstIteration = false;
